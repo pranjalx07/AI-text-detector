@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Dark theme — matches reference design */
+  --bg-primary:   #0b111a;
+  --bg-dark:      #111a26;
+  --bg-surface:   #1b2736;
+  --bg-surface2:  #1f2f42;
+  --teal:         #14b8a6;
+  --teal-dark:    #0f8d7f;
+  --border:       rgba(255, 255, 255, 0.10);
+  --border-teal:  rgba(20, 184, 166, 0.35);
+
+  /* Text */
+  --text-primary:   #f4f7fb;
+  --text-secondary: #9ba9be;
+  --text-muted:     #6b7a90;
+
+  /* Sentiment */
+  --human:     #10b981;
+  --human-bg:  rgba(16, 185, 129, 0.12);
+  --ai:        #ef4444;
+  --ai-bg:     rgba(239, 68, 68, 0.12);
+
+  /* Accent (maps to teal for legacy pages) */
+  --accent:       #14b8a6;
+  --accent-hover: #0f8d7f;
+  --accent-subtle: rgba(20, 184, 166, 0.10);
+
+  /* Shadows / radii */
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md:  0 8px 32px rgba(0,0,0,0.4);
+  --shadow-lg:  0 20px 60px rgba(0,0,0,0.5);
+  --radius-sm:  8px;
+  --radius:     12px;
+  --radius-lg:  16px;
+  --radius-xl:  20px;
+  --radius-2xl: 28px;
+
+  /* Font families */
+  --font-heading: 'Manrope', sans-serif;
+  --font-body:    'Manrope', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --font-inter:   'Manrope', sans-serif;
+  /* legacy aliases */
+  --font-ui:    'Manrope', sans-serif;
+  --font-serif: 'Manrope', sans-serif;
+}
+
+@theme inline {
+  --color-bg-primary:   var(--bg-primary);
+  --color-bg-dark:      var(--bg-dark);
+  --color-bg-surface:   var(--bg-surface);
+  --color-bg-surface2:  var(--bg-surface2);
+  --color-accent:       var(--teal);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-text-primary:   var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted:     var(--text-muted);
+  --color-border:       var(--border);
+  --color-border-strong: var(--border-teal);
+  --color-human:    var(--human);
+  --color-ai:       var(--ai);
+  --color-human-bg: var(--human-bg);
+  --color-ai-bg:    var(--ai-bg);
+  --font-inter:    'Manrope', sans-serif;
+  --font-heading:  'Manrope', sans-serif;
+  --font-body:     'Manrope', sans-serif;
+  --font-mono:     'JetBrains Mono', monospace;
+}
+
+html {
+  background: #0b111a;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Animations ── */
+@keyframes stamp {
+  0%   { transform: scale(1.08); opacity: 0; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+.animate-stamp { animation: stamp 0.25s ease-out forwards; }
+
+@keyframes scan-line {
+  0%   { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-scan-line { animation: scan-line 0.35s ease-out forwards; }
+
+@keyframes blink {
+  0%, 50%   { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.animate-blink { animation: blink 1s infinite; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+.animate-spin-slow { animation: spin 2s linear infinite; }
+
+@keyframes progress-dash {
+  0%   { stroke-dashoffset: 314; }
+  50%  { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -314; }
+}
+.animate-progress-dash { animation: progress-dash 1.5s ease-in-out infinite; }
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-down { animation: slideDown 0.3s ease forwards; }
