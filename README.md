@@ -28,3 +28,7 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+<p align="center">
+  <video src="https://res.cloudinary.com/daeuz5oa8/video/upload/v1781149506/AI_text_detector_demo_yrsqhy.mp4" width="700" controls autoplay loop muted></video>
+</p>
+
