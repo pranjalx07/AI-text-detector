@@ -5,7 +5,7 @@ import torch
 from transformers import pipeline, GPT2LMHeadModel, GPT2TokenizerFast
 from lime.lime_text import LimeTextExplainer
 
-MODEL_PATH = os.getenv("MODEL_PATH", "./bert-base-uncased_80_20_0.05wd_2lr_3epoch")
+MODEL_NAME = os.getenv("MODEL_NAME", "pranzalgiri588/bert_base_uncased")
 MODEL_MAX_LENGTH = int(os.getenv("MODEL_MAX_LENGTH", "350"))
 
 
@@ -21,13 +21,16 @@ def _read_calibration_temperature() -> float:
 CALIBRATION_TEMPERATURE = _read_calibration_temperature()
 
 # Load from local saved_model/ directory if it exists, otherwise fall back to HuggingFace
-classifier = pipeline("text-classification", model=MODEL_PATH, tokenizer=MODEL_PATH)
+classifier = pipeline("text-classification", model=MODEL_NAME, tokenizer=MODEL_NAME)
 
 # GPT-2 for perplexity calculation
 _ppl_model_id = "gpt2"
 _ppl_tokenizer = GPT2TokenizerFast.from_pretrained(_ppl_model_id)
 _ppl_model = GPT2LMHeadModel.from_pretrained(_ppl_model_id)
 _ppl_model.eval()
+
+device = torch.device("cpu")
+_ppl_model.to(device)
 
 # LIME explainer (class 0 = Human, class 1 = AI)
 explainer = LimeTextExplainer(class_names=["Human-Written", "AI-Generated"])
@@ -91,10 +94,17 @@ def _scores_to_probs(scores: list[dict]) -> tuple[float, float]:
 
 
 def _predict_proba(texts: list[str]) -> np.ndarray:
-    """Return (n_samples, 2) array of [human_prob, ai_prob] for LIME."""
-    results = classifier(list(texts), top_k=None, truncation=True, max_length=MODEL_MAX_LENGTH)
-    if results and isinstance(results, list) and results and isinstance(results[0], dict):
-        results = [results]
+    results = classifier(texts, top_k=None, truncation=True, max_length=MODEL_MAX_LENGTH)
+
+    probs = []
+    for scores in results:
+        if isinstance(scores, dict):
+            scores = [scores]
+
+        human, ai = _scores_to_probs(scores)
+        probs.append([human, ai])
+
+    return np.array(probs)
 
     probs = []
     for scores in results:
@@ -124,7 +134,7 @@ def predict_text(text: str) -> dict:
 def compute_perplexity(text: str) -> float:
     """Compute perplexity of text using GPT-2. Lower = more predictable (likely AI)."""
     encodings = _ppl_tokenizer(text, return_tensors="pt", truncation=True, max_length=1024)
-    input_ids = encodings.input_ids
+    input_ids = encodings.input_ids.to(device)
     with torch.no_grad():
         outputs = _ppl_model(input_ids, labels=input_ids)
         neg_log_likelihood = outputs.loss
