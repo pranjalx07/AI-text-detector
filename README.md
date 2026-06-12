@@ -94,7 +94,6 @@ http://localhost:3000
 ### Detection
 
 - `POST /api/detect` - classifies text and stores the result
-- `POST /api/explain` - returns LIME feature explanations
 
 ### History
 
