@@ -156,3 +156,5 @@ AI-detection-system/
 - The project is built as a group semester project and includes project background content in the About page.
 
 - The repository currently uses SQLite for persistence, so no external database server is required for local development.
+## DEMO
+https://github.com/user-attachments/assets/0e6eb148-6c51-4997-b0f5-6a7749791360
